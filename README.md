@@ -1,2 +1,2 @@
 # ProgTema3
-Ejercicio en clase 02/03/2022
+Ejercicio hecho en clase 02/03/2022
