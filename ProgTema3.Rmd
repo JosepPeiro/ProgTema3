@@ -67,7 +67,7 @@ knit_hooks$set(inline = function(x) {
 ```{r,echo=FALSE}
 # Especificamos las librerías necesarias en esta lista
 
-packages = c("MASS","knitr","tidyverse","car","tictoc","RSQLite")
+packages = c("MASS","knitr","tidyverse","car","tictoc","RSQLite", "dplyr", "ggplot2")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -83,6 +83,32 @@ package.check <- lapply(packages, FUN = function(x) {
 #verify they are loaded
 search()
 
+```
+
+```{r}
+download.file(url="https://covid.ourworldindata.org/data/owid-covid-data.csv", destfile="./data/datos_covid.csv")
+```
+
+```{r}
+datos=read.csv("./data/datos_covid.csv", header=T)
+```
+
+```{r}
+#str(datos)
+datos$date=as.POSIXct(datos$date, format="%Y-%m-%d")
+str(datos)
+```
+![Grafico](image (3).png)
+
+```{r}
+filtrados=datos%>%filter(location %in% c("United States", "Italy", "France", "Germany", "Canada", "Japan", "United Kigdom"))
+str(filtrados)
+espana=datos%>%filter(location=="Spain")
+str(espana)
+```
+
+```{r}
+ggplot(filtrados)+geom_line(aes(date, new_deaths_smoothed_per_million, color=location))+geom_line(data=espana, aes(date, new_deaths_smoothed_per_million), color="black", size=1.5)
 ```
 
 ```{r}
